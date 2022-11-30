@@ -91,13 +91,13 @@ public class UserAppointmentService {
             throw new ConflictLocalizedException(ConflictLocalizedError.TIME_SLOT_IS_NOT_AVAILABLE);
         }
 
-        Appointment newAppointment = new Appointment();
-
-        newAppointment.setClient(client);
-        newAppointment.setVet(vet);
-        newAppointment.setPet(pet);
-        newAppointment.setProblem(appointmentInfo.getProblem());
-        newAppointment.setScheduledAt(date.atTime(timeSlot.getStartTime()));
+        Appointment newAppointment = Appointment.builder()
+                                                .client(client)
+                                                .vet(vet)
+                                                .pet(pet)
+                                                .problem(appointmentInfo.getProblem())
+                                                .scheduledAt(date.atTime(timeSlot.getStartTime()))
+                                                .build();
 
         return appointmentRepository.save(newAppointment);
     }
