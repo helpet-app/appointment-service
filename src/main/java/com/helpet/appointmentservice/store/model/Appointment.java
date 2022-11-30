@@ -26,18 +26,29 @@ public class Appointment {
 
     @NotNull
     @Column(name = "created_at", nullable = false)
-    private OffsetDateTime createdAt;
+    private OffsetDateTime createdAt = OffsetDateTime.now();
 
     @NotNull
     @Column(name = "scheduled_at", nullable = false)
     private OffsetDateTime scheduledAt;
 
+    @Column(name = "connection_link", length = Integer.MAX_VALUE)
+    private String connectionLink;
+
     @NotNull
     @Column(name = "problem", nullable = false, length = Integer.MAX_VALUE)
     private String problem;
 
-    @Column(name = "connection_link", length = Integer.MAX_VALUE)
-    private String connectionLink;
+    @Column(name = "diagnosis", length = Integer.MAX_VALUE)
+    private String diagnosis;
+
+    @Column(name = "recommendations", length = Integer.MAX_VALUE)
+    private String recommendations;
+
+    @NotNull
+    @Enumerated(EnumType.STRING)
+    @Column(name = "status", nullable = false)
+    private AppointmentStatus status = AppointmentStatus.SCHEDULED;
 
     @NotNull
     @ManyToOne(fetch = FetchType.LAZY, optional = false)
