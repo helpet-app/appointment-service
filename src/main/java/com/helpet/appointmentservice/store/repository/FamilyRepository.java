@@ -9,6 +9,4 @@ import java.util.UUID;
 @Repository
 public interface FamilyRepository extends JpaRepository<Family, UUID> {
     boolean existsByIdAndMembersId(UUID familyId, UUID memberId);
-
-    boolean existsByIdAndPetsId(UUID familyId, UUID petId);
 }
