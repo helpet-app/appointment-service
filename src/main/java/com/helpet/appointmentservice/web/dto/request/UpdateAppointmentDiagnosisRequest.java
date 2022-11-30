@@ -1,10 +1,8 @@
 package com.helpet.appointmentservice.web.dto.request;
 
-import lombok.AllArgsConstructor;
-import lombok.Getter;
+import lombok.Data;
 
-@Getter
-@AllArgsConstructor
+@Data
 public class UpdateAppointmentDiagnosisRequest {
-    private final String diagnosis;
+    private String diagnosis;
 }

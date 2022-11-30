@@ -1,11 +1,9 @@
 package com.helpet.appointmentservice.web.dto.request;
 
 import com.helpet.appointmentservice.store.model.AppointmentStatus;
-import lombok.AllArgsConstructor;
-import lombok.Getter;
+import lombok.Data;
 
-@Getter
-@AllArgsConstructor
+@Data
 public class UpdateAppointmentStatusRequest {
-    private final AppointmentStatus status;
+    private AppointmentStatus status;
 }

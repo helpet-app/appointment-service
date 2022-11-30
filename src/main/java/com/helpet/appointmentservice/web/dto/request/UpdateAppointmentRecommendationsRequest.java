@@ -1,10 +1,8 @@
 package com.helpet.appointmentservice.web.dto.request;
 
-import lombok.AllArgsConstructor;
-import lombok.Getter;
+import lombok.Data;
 
-@Getter
-@AllArgsConstructor
+@Data
 public class UpdateAppointmentRecommendationsRequest {
-    private final String recommendations;
+    private String recommendations;
 }
