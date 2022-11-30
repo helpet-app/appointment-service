@@ -2,16 +2,18 @@ package com.helpet.appointmentservice.store.model;
 
 import jakarta.persistence.*;
 import jakarta.validation.constraints.NotNull;
-import lombok.Getter;
-import lombok.Setter;
+import lombok.*;
 import org.hibernate.annotations.OnDelete;
 import org.hibernate.annotations.OnDeleteAction;
 
 import java.time.OffsetDateTime;
 import java.util.UUID;
 
+@Builder
 @Getter
 @Setter
+@NoArgsConstructor
+@AllArgsConstructor
 @Entity
 @Table(name = "appointments", indexes = {
         @Index(name = "non_emergency_appointments_pet_fkey", columnList = "pet_id"),
@@ -24,6 +26,7 @@ public class Appointment {
     @Column(name = "id", nullable = false)
     private UUID id;
 
+    @Builder.Default
     @NotNull
     @Column(name = "created_at", nullable = false)
     private OffsetDateTime createdAt = OffsetDateTime.now();
@@ -45,6 +48,7 @@ public class Appointment {
     @Column(name = "recommendations", length = Integer.MAX_VALUE)
     private String recommendations;
 
+    @Builder.Default
     @NotNull
     @Enumerated(EnumType.STRING)
     @Column(name = "status", nullable = false)
