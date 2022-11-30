@@ -18,8 +18,4 @@ public class FamilyService {
     public boolean familyHasMember(UUID familyId, UUID memberId) {
         return familyRepository.existsByIdAndMembersId(familyId, memberId);
     }
-
-    public boolean familyHasPet(UUID familyId, UUID petId) {
-        return familyRepository.existsByIdAndPetsId(familyId, petId);
-    }
 }
