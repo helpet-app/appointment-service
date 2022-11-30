@@ -1,19 +1,21 @@
 package com.helpet.appointmentservice.web.dto.request;
 
-import lombok.Data;
+import lombok.AllArgsConstructor;
+import lombok.Getter;
 
 import java.time.LocalDate;
 import java.util.UUID;
 
-@Data
+@Getter
+@AllArgsConstructor
 public class CreateAppointmentRequest {
     private LocalDate date;
 
-    private Integer timeSlotId;
+    private final Integer timeSlotId;
 
-    private String problem;
+    private final String problem;
 
-    private UUID vetId;
+    private final UUID vetId;
 
-    private UUID petId;
+    private final UUID petId;
 }
