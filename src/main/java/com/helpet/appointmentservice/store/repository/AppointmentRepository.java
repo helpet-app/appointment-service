@@ -6,7 +6,6 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 
-import java.time.OffsetDateTime;
 import java.util.Optional;
 import java.util.UUID;
 
@@ -15,8 +14,6 @@ public interface AppointmentRepository extends JpaRepository<Appointment, UUID> 
     Page<Appointment> findAllByVetId(UUID vetId, Pageable pageable);
 
     Optional<Appointment> findByVetIdAndId(UUID vetId, UUID id);
-
-    Page<Appointment> findAllByVetIdAndScheduledAtIsAfter(UUID vetId, OffsetDateTime time, Pageable pageable);
 
     Page<Appointment> findAllByClientId(UUID clientId, Pageable pageable);
 
