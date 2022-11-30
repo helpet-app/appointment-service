@@ -15,7 +15,7 @@ import java.util.UUID;
 @Table(name = "vet_schedule", indexes = {
         @Index(name = "vet_schedule_vet_fkey", columnList = "vet_id")
 })
-public class VetSchedule {
+public class VetScheduleSlot {
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
     @Column(name = "id", nullable = false)

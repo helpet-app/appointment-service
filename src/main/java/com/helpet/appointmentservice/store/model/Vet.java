@@ -39,5 +39,5 @@ public class Vet {
     private String avatarUrl;
 
     @OneToMany(mappedBy = "vet")
-    private Set<VetSchedule> vetSchedule = new LinkedHashSet<>();
+    private Set<VetScheduleSlot> vetSchedule = new LinkedHashSet<>();
 }
