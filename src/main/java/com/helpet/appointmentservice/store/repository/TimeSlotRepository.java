@@ -7,10 +7,13 @@ import org.springframework.stereotype.Repository;
 
 import java.time.LocalDate;
 import java.util.List;
+import java.util.Optional;
 import java.util.UUID;
 
 @Repository
 public interface TimeSlotRepository extends JpaRepository<TimeSlot, Integer> {
-    @Query(value = "SELECT * FROM get_free_vet_time_slots_by_date(:vetId, :date)", nativeQuery = true)
+    @Query(value = "SELECT * FROM find_free_vet_time_slots_by_date(:vetId, :date)", nativeQuery = true)
     List<TimeSlot> findFreeVetTimeSlotsByDate(UUID vetId, LocalDate date);
+
+    Optional<TimeSlot> findTimeSlotById(int id);
 }
