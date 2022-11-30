@@ -9,18 +9,26 @@ import java.util.UUID;
 
 @Getter
 @AllArgsConstructor
-public class AppointmentResponse {
+public class DetailedAppointmentResponse {
     private final UUID id;
+
+    private final OffsetDateTime createdAt;
 
     private final OffsetDateTime scheduledAt;
 
+    private final String connectionLink;
+
     private final String problem;
+
+    private final String diagnosis;
+
+    private final String recommendations;
 
     private final AppointmentStatus status;
 
-    private final VetResponse vet;
+    private final DetailedVetResponse vet;
 
-    private final UserResponse client;
+    private final DetailedUserResponse client;
 
     private final PetResponse pet;
 }

@@ -7,7 +7,7 @@ import java.util.UUID;
 
 @Getter
 @AllArgsConstructor
-public class VetResponse {
+public class DetailedUserResponse {
     private final UUID id;
 
     private final String firstName;
@@ -15,6 +15,8 @@ public class VetResponse {
     private final String middleName;
 
     private final String lastName;
+
+    private final String email;
 
     private final String avatarUrl;
 }

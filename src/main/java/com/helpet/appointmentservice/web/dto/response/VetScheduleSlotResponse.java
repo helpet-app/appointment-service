@@ -5,7 +5,7 @@ import lombok.Data;
 import java.util.UUID;
 
 @Data
-public class VetScheduleResponse {
+public class VetScheduleSlotResponse {
     private UUID id;
     
     private TimeSlotResponse timeSlot;

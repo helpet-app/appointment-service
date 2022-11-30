@@ -1,20 +1,20 @@
 package com.helpet.appointmentservice.web.dto.response;
 
-import lombok.Data;
+import lombok.AllArgsConstructor;
+import lombok.Getter;
 
 import java.util.UUID;
 
-@Data
+@Getter
+@AllArgsConstructor
 public class UserResponse {
-    private UUID id;
+    private final UUID id;
 
-    private String firstName;
+    private final String firstName;
 
-    private String middleName;
+    private final String middleName;
 
-    private String lastName;
+    private final String lastName;
 
-    private String email;
-
-    private String avatarUrl;
+    private final String avatarUrl;
 }

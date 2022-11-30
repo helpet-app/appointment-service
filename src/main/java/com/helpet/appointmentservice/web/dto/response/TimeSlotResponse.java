@@ -1,14 +1,16 @@
 package com.helpet.appointmentservice.web.dto.response;
 
-import lombok.Data;
+import lombok.AllArgsConstructor;
+import lombok.Getter;
 
 import java.time.OffsetTime;
 
-@Data
+@Getter
+@AllArgsConstructor
 public class TimeSlotResponse {
-    private Integer id;
+    private final Integer id;
 
-    private OffsetTime startTime;
+    private final OffsetTime startTime;
 
-    private OffsetTime endTime;
+    private final OffsetTime endTime;
 }

@@ -1,14 +1,16 @@
 package com.helpet.appointmentservice.web.dto.response;
 
-import lombok.Data;
+import lombok.AllArgsConstructor;
+import lombok.Getter;
 
 import java.util.UUID;
 
-@Data
+@Getter
+@AllArgsConstructor
 public class PetResponse {
-    private UUID id;
+    private final UUID id;
 
-    private String name;
+    private final String name;
 
-    private String avatarUrl;
+    private final String avatarUrl;
 }
