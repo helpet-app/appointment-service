@@ -1,23 +1,22 @@
-package com.helpet.service.appointment.store.model;
+package com.helpet.service.appointment.storage.model;
 
 import jakarta.persistence.*;
 import jakarta.validation.constraints.NotNull;
+import lombok.AllArgsConstructor;
 import lombok.Getter;
+import lombok.NoArgsConstructor;
 import lombok.Setter;
 
 import java.time.OffsetTime;
 
 @Getter
 @Setter
+@NoArgsConstructor
+@AllArgsConstructor
 @Entity
-@Table(name = "time_slots", indexes = {
-        @Index(name = "time_slots_start_time_end_time_key", columnList = "start_time, end_time", unique = true),
-        @Index(name = "time_slots_end_time_key", columnList = "end_time", unique = true),
-        @Index(name = "time_slots_start_time_key", columnList = "start_time", unique = true)
-})
+@Table(name = "time_slots")
 public class TimeSlot {
     @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "id", nullable = false)
     private Integer id;
 
