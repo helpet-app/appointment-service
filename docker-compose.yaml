@@ -1,0 +1,30 @@
+version: '3'
+
+services:
+  appointment-service-database:
+    image: ghcr.io/helpet-app/appointment-service-database:0.0.1-snapshot
+    container_name: appointment-service-database
+    ports:
+      - '5433:5432'
+    env_file:
+      - .appointment-service-database.env
+    volumes:
+      - appointment-service-database-data:/var/lib/postgresql/data/
+  appointment-service:
+    image: ghcr.io/helpet-app/appointment-service:0.0.1-snapshot
+    container_name: appointment-service
+    env_file:
+      - .appointment-service.env
+    depends_on:
+      - appointment-service-database
+    networks:
+      - helpet-network
+    restart: always
+
+volumes:
+  appointment-service-database-data:
+    driver: local
+
+networks:
+  helpet-network:
+    external: true
