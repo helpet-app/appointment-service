@@ -1,28 +1,24 @@
 package com.helpet.service.appointment.service;
 
 import com.helpet.service.appointment.service.error.NotFoundLocalizedError;
-import com.helpet.service.appointment.store.model.Family;
-import com.helpet.service.appointment.store.model.Pet;
-import com.helpet.service.appointment.store.repository.PetRepository;
+import com.helpet.service.appointment.storage.model.Account;
+import com.helpet.service.appointment.storage.model.Pet;
+import com.helpet.service.appointment.storage.repository.PetRepository;
 import com.helpet.exception.NotFoundLocalizedException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import java.util.Objects;
 import java.util.UUID;
 
 @Service
 public class PetService {
-    private final FamilyService familyService;
-
-    private final UserService userService;
+    private final AccountService accountService;
 
     private final PetRepository petRepository;
 
     @Autowired
-    public PetService(FamilyService familyService, UserService userService, PetRepository petRepository) {
-        this.familyService = familyService;
-        this.userService = userService;
+    public PetService(AccountService accountService, PetRepository petRepository) {
+        this.accountService = accountService;
         this.petRepository = petRepository;
     }
 
@@ -34,18 +30,19 @@ public class PetService {
         return petRepository.findPetById(petId).orElseThrow(() -> new NotFoundLocalizedException(NotFoundLocalizedError.PET_DOES_NOT_EXIST));
     }
 
-    public boolean userIsRelatedToPet(UUID userId, UUID petId) throws NotFoundLocalizedException {
-        if (!userService.userExists(userId)) {
-            throw new NotFoundLocalizedException(NotFoundLocalizedError.USER_DOES_NOT_EXIST);
+    public boolean userIsAssociatedWithPet(UUID userId, UUID petId) throws NotFoundLocalizedException {
+        if (!accountService.accountExists(userId)) {
+            throw new NotFoundLocalizedException(NotFoundLocalizedError.ACCOUNT_DOES_NOT_EXIST);
         }
 
-        Pet pet = getPet(petId);
-
-        Family family = pet.getFamily();
-        if (Objects.isNull(family)) {
-            return Objects.equals(pet.getOwner().getId(), userId);
+        if (!petExists(petId)) {
+            throw new NotFoundLocalizedException(NotFoundLocalizedError.PET_DOES_NOT_EXIST);
         }
 
-        return familyService.familyHasMember(family.getId(), userId);
+        return petRepository.petIsAssociatedWithUser(petId, userId);
+    }
+
+    public boolean userIsAssociatedWithPet(Account user, Pet pet) {
+        return petRepository.petIsAssociatedWithUser(pet.getId(), user.getId());
     }
 }

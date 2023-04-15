@@ -1,8 +1,8 @@
 package com.helpet.service.appointment.service;
 
 import com.helpet.service.appointment.service.error.NotFoundLocalizedError;
-import com.helpet.service.appointment.store.model.Vet;
-import com.helpet.service.appointment.store.repository.VetRepository;
+import com.helpet.service.appointment.storage.model.Vet;
+import com.helpet.service.appointment.storage.repository.VetRepository;
 import com.helpet.exception.NotFoundLocalizedException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;

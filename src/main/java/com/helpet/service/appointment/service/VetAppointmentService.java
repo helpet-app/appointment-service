@@ -1,12 +1,11 @@
 package com.helpet.service.appointment.service;
 
-import com.helpet.service.appointment.service.error.NotFoundLocalizedError;
-import com.helpet.service.appointment.store.model.Appointment;
-import com.helpet.service.appointment.store.repository.AppointmentRepository;
-import com.helpet.service.appointment.web.dto.request.UpdateAppointmentDiagnosisRequest;
-import com.helpet.service.appointment.web.dto.request.UpdateAppointmentRecommendationsRequest;
-import com.helpet.service.appointment.web.dto.request.UpdateAppointmentStatusRequest;
+import com.helpet.exception.BadRequestLocalizedException;
 import com.helpet.exception.NotFoundLocalizedException;
+import com.helpet.service.appointment.dto.request.UpdateAppointmentConclusionRequest;
+import com.helpet.service.appointment.service.error.NotFoundLocalizedError;
+import com.helpet.service.appointment.storage.model.Appointment;
+import com.helpet.service.appointment.storage.repository.AppointmentRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -18,11 +17,16 @@ import java.util.UUID;
 public class VetAppointmentService {
     private final VetService vetService;
 
+    private final CommonAppointmentService commonAppointmentService;
+
     private final AppointmentRepository appointmentRepository;
 
     @Autowired
-    public VetAppointmentService(VetService vetService, AppointmentRepository appointmentRepository) {
+    public VetAppointmentService(VetService vetService,
+                                 CommonAppointmentService commonAppointmentService,
+                                 AppointmentRepository appointmentRepository) {
         this.vetService = vetService;
+        this.commonAppointmentService = commonAppointmentService;
         this.appointmentRepository = appointmentRepository;
     }
 
@@ -31,7 +35,7 @@ public class VetAppointmentService {
             throw new NotFoundLocalizedException(NotFoundLocalizedError.VET_DOES_NOT_EXIST);
         }
 
-        return appointmentRepository.findAllByVetId(vetId, pageable);
+        return appointmentRepository.findAllByVetIdOrderByScheduledAtDesc(vetId, pageable);
     }
 
     public Appointment getAppointment(UUID vetId, UUID appointmentId) throws NotFoundLocalizedException {
@@ -39,31 +43,39 @@ public class VetAppointmentService {
             throw new NotFoundLocalizedException(NotFoundLocalizedError.VET_DOES_NOT_EXIST);
         }
 
-        return appointmentRepository.findByVetIdAndId(vetId, appointmentId)
+        return appointmentRepository.findAppointmentByVetIdAndId(vetId, appointmentId)
                                     .orElseThrow(() -> new NotFoundLocalizedException(NotFoundLocalizedError.VET_DOES_NOT_HAVE_THIS_APPOINTMENT));
     }
 
-    public Appointment updateAppointmentDiagnosis(UUID vetId,
-                                                  UUID appointmentId,
-                                                  UpdateAppointmentDiagnosisRequest updateAppointmentDiagnosisRequest) throws NotFoundLocalizedException {
-        Appointment appointment = getAppointment(vetId, appointmentId);
-        appointment.setDiagnosis(updateAppointmentDiagnosisRequest.getDiagnosis());
+    public Appointment getDetailedAppointment(UUID vetId, UUID appointmentId) throws NotFoundLocalizedException {
+        if (!vetService.vetExists(vetId)) {
+            throw new NotFoundLocalizedException(NotFoundLocalizedError.VET_DOES_NOT_EXIST);
+        }
+
+        return appointmentRepository.findDetailedAppointmentByVetIdAndId(vetId, appointmentId)
+                                    .orElseThrow(() -> new NotFoundLocalizedException(NotFoundLocalizedError.VET_DOES_NOT_HAVE_THIS_APPOINTMENT));
+    }
+
+    public Appointment updateAppointmentConclusion(UUID vetId,
+                                                   UUID appointmentId,
+                                                   UpdateAppointmentConclusionRequest appointmentConclusionInfo) throws NotFoundLocalizedException {
+        Appointment appointment = getDetailedAppointment(vetId, appointmentId);
+
+        appointment.setDiagnosis(appointmentConclusionInfo.getDiagnosis());
+        appointment.setRecommendations(appointmentConclusionInfo.getRecommendations());
+
         return appointmentRepository.save(appointment);
     }
 
-    public Appointment updateAppointmentRecommendations(UUID vetId,
-                                                        UUID appointmentId,
-                                                        UpdateAppointmentRecommendationsRequest updateAppointmentRecommendationsRequest) throws NotFoundLocalizedException {
+    public void cancelAppointment(UUID vetId, UUID appointmentId) throws NotFoundLocalizedException, BadRequestLocalizedException {
         Appointment appointment = getAppointment(vetId, appointmentId);
-        appointment.setRecommendations(updateAppointmentRecommendationsRequest.getRecommendations());
-        return appointmentRepository.save(appointment);
+
+        commonAppointmentService.cancelAppointment(appointment);
     }
 
-    public Appointment updateAppointmentStatus(UUID vetId,
-                                               UUID appointmentId,
-                                               UpdateAppointmentStatusRequest updateAppointmentStatusRequest) throws NotFoundLocalizedException {
+    public void completeAppointment(UUID vetId, UUID appointmentId) throws NotFoundLocalizedException, BadRequestLocalizedException {
         Appointment appointment = getAppointment(vetId, appointmentId);
-        appointment.setStatus(updateAppointmentStatusRequest.getStatus());
-        return appointmentRepository.save(appointment);
+
+        commonAppointmentService.completeAppointment(appointment);
     }
 }
